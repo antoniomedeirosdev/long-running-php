@@ -1,0 +1,8 @@
+services:
+    php8site:
+        image: antoniomedeiros/long-running-php
+        container_name: apache-php
+        volumes:
+            - ./:/var/www/html
+        ports:
+            - "8080:80"
