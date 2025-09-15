@@ -12,6 +12,12 @@ RUN composer self-update
 WORKDIR /var/www/html
 COPY . .
 
+# Install Xdebug
+RUN pecl install xdebug && \
+    docker-php-ext-enable xdebug
+
+COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
 # Install project dependencies
 CMD bash -c "composer install && apache2-foreground"
 

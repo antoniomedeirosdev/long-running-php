@@ -1,5 +1,7 @@
 services:
     php8site:
+        build:
+            context: .
         image: antoniomedeiros/long-running-php
         container_name: apache-php
         volumes:

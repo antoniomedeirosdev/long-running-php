@@ -25,7 +25,7 @@ class OrderController
             $options = array(
                 'http' => array(
                     'method' => 'POST',
-                    'content' => json_encode($order->toArray()),
+                    'content' => json_encode($data),
                     'header' => "Content-Type: application/json\r\n" .
                         "Accept: application/json\r\n"
                 )
