@@ -6,14 +6,41 @@ class OrderController
 
     private static $instance = null;
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new self();
         }
         return self::$instance;
     }
 
-    public function listOrders() {
+    public function generateOrders()
+    {
+        $howMany = $_POST['how_many'];
+
+        for ($i = 0; $i < $howMany; $i++) {
+            $order = new Order();
+            $data = $order->toArray();
+
+            $options = array(
+                'http' => array(
+                    'method' => 'POST',
+                    'content' => json_encode($order->toArray()),
+                    'header' => "Content-Type: application/json\r\n" .
+                        "Accept: application/json\r\n"
+                )
+            );
+            $context = stream_context_create($options);
+            $result = file_get_contents(self::JSON_SERVER_URL . '/orders', false, $context);
+            //$response = json_decode($result);
+            //var_dump($response); die();
+        }
+
+        $this->listOrders();
+    }
+
+    public function listOrders()
+    {
         $orders = json_decode(file_get_contents(self::JSON_SERVER_URL . '/orders'), true);
         $arrOrders = [];
         foreach ($orders as $order) {

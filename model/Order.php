@@ -47,6 +47,10 @@ class Order
         $this->status = $status;
     }
 
+    public function toArray() {
+        return get_object_vars($this);
+    }
+
     private function uuidgen()
     {
         // https://stackoverflow.com/a/44504979/1657502

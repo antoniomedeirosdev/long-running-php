@@ -9,6 +9,10 @@ if (!isset($_GET['action'])) {
 }
 
 switch ($_GET['action']) {
+    case 'generate_orders':
+        OrderController::getInstance()->generateOrders();
+        break;
+
     case 'list_orders':
         OrderController::getInstance()->listOrders();
         break;
