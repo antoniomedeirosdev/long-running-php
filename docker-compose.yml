@@ -6,3 +6,11 @@ services:
             - ./:/var/www/html
         ports:
             - "8080:80"
+
+    db:
+        image: clue/json-server
+        container_name: json-server
+        volumes:
+            - ./data/db.json:/data/db.json
+        ports:
+            - "8081:80"
