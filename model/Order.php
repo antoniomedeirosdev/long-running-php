@@ -15,6 +15,10 @@ class Order
         $this->status = $status;
     }
 
+    public static function fromArray(array $data) {
+        return new self($data['id'], $data['status']);
+    }
+
     public function getId()
     {
         return $this->id;
@@ -35,6 +39,11 @@ class Order
             case self::STATUS_ERROR:
                 return 'Error';
         }
+    }
+
+    public static function randomStatus() {
+        $randomNumber = mt_rand(1, 100);
+        return ($randomNumber < 80) ? self::STATUS_OK : self::STATUS_ERROR;
     }
 
     public function setId($id)

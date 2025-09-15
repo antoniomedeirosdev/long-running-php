@@ -17,6 +17,10 @@ switch ($_GET['action']) {
         OrderController::getInstance()->listOrders();
         break;
 
+    case 'process_orders':
+        OrderController::getInstance()->processOrders();
+        break;
+
     default:
         # code...
         break;

@@ -1,27 +1,41 @@
+<?php if (!empty($this->getAlert())) { ?>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <?= $this->getAlert() ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php } ?>
+
 <div class="d-flex flex-wrap justify-content-end mb-3">
     <form class="col-12 col-lg-auto">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateOrdersModal">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#generateOrdersModal">
             Generate orders
+        </button>
+        <button type="button" class="btn btn-primary" id="btnProcessOrders">
+            Process orders
         </button>
     </form>
 </div>
 
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($arrOrders as $objOrder) { ?>
+<form id="frmProcessOrders" action="/?action=process_orders" method="POST">
+    <table class="table table-striped table-hover">
+        <thead>
             <tr>
-                <td><?= $objOrder->getId(); ?></td>
-                <td><?= $objOrder->getStatusAsString(); ?></td>
+                <th scope="col"><input type="checkbox" id="checkAllOrders"/></th>
+                <th scope="col">ID</th>
+                <th scope="col">Status</th>
             </tr>
-        <?php } ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php foreach ($arrOrders as $objOrder) { ?>
+                <tr>
+                    <td><input type="checkbox" name="id[]" value="<?= $objOrder->getId() ?>"/></td>
+                    <td><?= $objOrder->getId() ?></td>
+                    <td><?= $objOrder->getStatusAsString() ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</form>
 
 <div class="modal fade" id="generateOrdersModal" tabindex="-1" aria-labelledby="generateOrdersModalLabel"
     aria-hidden="true">
@@ -46,3 +60,5 @@
         </div>
     </div>
 </div>
+
+<script src="js/list_orders.js"></script>
