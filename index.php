@@ -2,7 +2,7 @@
 require_once 'model/Order.php';
 require_once 'controller/OrderController.php';
 
-include 'view/header.php';
+session_start();
 
 if (!isset($_GET['action'])) {
     $_GET['action'] = 'list_orders';
@@ -25,5 +25,3 @@ switch ($_GET['action']) {
         # code...
         break;
 }
-
-include 'view/footer.php';

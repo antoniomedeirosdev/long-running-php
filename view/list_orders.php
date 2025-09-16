@@ -1,9 +1,15 @@
-<?php if (!empty($this->getAlert())) { ?>
+<?php 
+include __DIR__ . '/header.php';
+
+if (!empty($_SESSION['message'])) {
+?>
     <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <?= $this->getAlert() ?>
+        <?= $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<?php } ?>
+<?php
+}
+?>
 
 <div class="d-flex flex-wrap justify-content-end mb-3">
     <form class="col-12 col-lg-auto">
@@ -62,3 +68,7 @@
 </div>
 
 <script src="js/list_orders.js"></script>
+
+<?php
+include __DIR__ . '/footer.php';
+?>

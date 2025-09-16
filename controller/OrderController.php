@@ -2,10 +2,10 @@
 
 class OrderController
 {
+    public const APP_URL = 'http://localhost:8080';
     public const JSON_SERVER_URL = 'http://json-server/orders';
 
     private static $instance = null;
-    private $alert = '';
 
     public static function getInstance()
     {
@@ -13,16 +13,6 @@ class OrderController
             self::$instance = new self();
         }
         return self::$instance;
-    }
-
-    public function getAlert()
-    {
-        return $this->alert;
-    }
-
-    public function setAlert($alert)
-    {
-        $this->alert = $alert;
     }
 
     public function generateOrders()
@@ -47,9 +37,10 @@ class OrderController
             //var_dump($response); die();
         }
 
-        $this->setAlert('Orders generated!');
+        $_SESSION['message'] = 'Orders generated!';
 
-        $this->listOrders();
+        header('Location: ' . self::APP_URL);
+        exit();
     }
 
     public function listOrders()
@@ -62,6 +53,10 @@ class OrderController
         }
 
         include __DIR__ . '/../view/list_orders.php';
+
+        if (!empty($_SESSION['message'])) {
+            unset($_SESSION['message']);
+        }
     }
 
     public function processOrders()
@@ -74,7 +69,7 @@ class OrderController
             $this->updateOrder($order);
         }
 
-        $this->setAlert('Orders processed!');
+        $_SESSION['message'] = 'Orders processed!';
 
         $this->listOrders();
     }
