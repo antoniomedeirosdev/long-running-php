@@ -63,45 +63,18 @@ class OrderController
     {
         $arrId = $_POST['id'];
 
+        $arrOrders = [];
         foreach ($arrId as $id) {
-            $order = new Order($id);
-            $this->remoteProcess($order);
-            $this->updateOrder($order);
+            $arrOrders[] = new Order($id);
         }
+
+        // TODO Create queue
+        // TODO Start worker in background
 
         $_SESSION['message'] = 'Orders processed!';
 
         $this->listOrders();
     }
 
-    private function remoteProcess(Order $order)
-    {
-        // Sleep randomly between 2 and 10 seconds to simulate talking to another system
-        $randomNumber = mt_rand(2, 10);
-        sleep($randomNumber);
-
-        // Also define a random new status
-        $order->setStatus(Order::randomStatus());
-    }
-
-    private function updateOrder(Order $order)
-    {
-        $data = $order->toArray();
-        $jsonData = json_encode($data);
-
-        $curl = curl_init(self::JSON_SERVER_URL . '/' . $order->getId());
-
-        // Set cURL options
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonData) // Optional but good practice
-        ]);
-
-        curl_exec($curl);
-
-        curl_close($curl);
-    }
+    
 }
