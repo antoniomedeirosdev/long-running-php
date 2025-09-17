@@ -14,15 +14,11 @@ class OrderWorker
 
     public function processOrders()
     {
-        while (true) {
+        $initialSize = $this->queue->getInitialSize();
+        for ($currentOrder = 1; $currentOrder <= $initialSize; $currentOrder++) { 
             $order = $this->queue->dequeue();
-
-            if (empty($order)) {
-                break;
-            } else {
-                $this->remoteProcess($order);
-                $this->updateOrder($order);
-            }
+            $this->remoteProcess($order);
+            $this->updateOrder($order);
         }
     }
 
@@ -38,7 +34,10 @@ class OrderWorker
 
     public static function startInBackgrond($key) {
         $command = 'php ' . __DIR__ . '/background_script.php "' . $key . '" &';
-        exec($command);
+        // To debug the background script, comment the next line...
+        //exec($command);
+        // ... and uncomment the next line.
+        return;
     }
 
     private function updateOrder(Order $order)

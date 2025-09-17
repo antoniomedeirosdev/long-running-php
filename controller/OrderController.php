@@ -82,15 +82,23 @@ class OrderController
     public function showProgress()
     {
         $queueKey = $_GET['queue'];
+
+        // BEGIN Debugging the background script
+        $argv[1] = $queueKey;
+        include __DIR__ . '/../queue/background_script.php';
+        // END Debugging the background script
+
         $queue = new OrderQueue($queueKey);
         $initialSize = $queue->getInitialSize();
         $currentSize = $queue->getCurrentSize();
-        // BEGIN Test
-        if ($currentSize > 0) {
-            $currentSize = $currentSize - 1;
-            $queue->setCurrentSize($currentSize);
-        }
-        // END Test
+
+        // BEGIN Testing the progress bar
+        // if ($currentSize > 0) {
+        //     $currentSize = $currentSize - 1;
+        //     $queue->setCurrentSize($currentSize);
+        // }
+        // END Testing the progress bar
+
         $progress = ceil((($initialSize - $currentSize) / $initialSize) * 100);
 
         include __DIR__ . '/../view/show_progress.php';

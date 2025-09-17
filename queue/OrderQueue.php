@@ -27,7 +27,7 @@ class OrderQueue
     public function dequeue(): ?Order
     {
         $jsonOrder = $this->client->lpop($this->key);
-        $arrOrder = json_decode($jsonOrder);
+        $arrOrder = json_decode($jsonOrder, true);
         $order = Order::fromArray($arrOrder);
 
         $currentSize = $this->getCurrentSize();
