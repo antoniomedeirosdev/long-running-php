@@ -24,8 +24,8 @@ class OrderWorker
 
     private function remoteProcess(Order $order)
     {
-        // Sleep randomly between 2 and 10 seconds to simulate talking to another system
-        $randomNumber = mt_rand(2, 10);
+        // Sleep some seconds (decided at random) to simulate talking to another system
+        $randomNumber = mt_rand(0, 2);
         sleep($randomNumber);
 
         // Also define a random new status
@@ -33,9 +33,10 @@ class OrderWorker
     }
 
     public static function startInBackgrond($key) {
-        $command = 'php ' . __DIR__ . '/background_script.php "' . $key . '" &';
+        // https://stackoverflow.com/a/23572776/1657502
+        $command = 'nohup nice php ' . __DIR__ . '/background_script.php "' . $key . '" > /dev/null 2>&1 & echo $!';
         // To debug the background script, comment the next line...
-        exec($command);
+        $pid = shell_exec($command);
         // ... and uncomment the next line.
         //return;
     }
