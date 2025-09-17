@@ -9,4 +9,3 @@
 
 <body>
     <div class="container my-5">
-        <h1>Orders</h1>

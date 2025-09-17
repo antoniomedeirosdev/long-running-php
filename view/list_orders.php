@@ -1,15 +1,15 @@
 <?php 
 include __DIR__ . '/header.php';
-
-if (!empty($_SESSION['message'])) {
 ?>
+
+<h1>Orders</h1>
+
+<?php if (!empty($_SESSION['message'])) { ?>
     <div class="alert alert-info alert-dismissible fade show" role="alert">
         <?= $_SESSION['message'] ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-<?php
-}
-?>
+<?php } ?>
 
 <div class="d-flex flex-wrap justify-content-end mb-3">
     <form class="col-12 col-lg-auto">

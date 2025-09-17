@@ -4,7 +4,7 @@ use Predis\Client;
 class OrderWorker
 {
     public const JSON_SERVER_URL = 'http://json-server/orders';
-    
+
     private OrderQueue $queue;
 
     public function __construct($key)
@@ -36,6 +36,11 @@ class OrderWorker
         $order->setStatus(Order::randomStatus());
     }
 
+    public static function startInBackgrond($key) {
+        $command = 'php ' . __DIR__ . '/background_script.php "' . $key . '" &';
+        exec($command);
+    }
+
     private function updateOrder(Order $order)
     {
         $data = $order->toArray();
@@ -43,7 +48,6 @@ class OrderWorker
 
         $curl = curl_init(self::JSON_SERVER_URL . '/' . $order->getId());
 
-        // Set cURL options
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

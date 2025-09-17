@@ -11,7 +11,7 @@ class Order
 
     public function __construct($id = null, $status = self::STATUS_QUEUED)
     {
-        $this->id = $id ?? $this->uuidgen();
+        $this->id = $id ?? self::uuidgen();
         $this->status = $status;
     }
 
@@ -60,7 +60,7 @@ class Order
         return get_object_vars($this);
     }
 
-    private function uuidgen()
+    public static function uuidgen()
     {
         // https://stackoverflow.com/a/44504979/1657502
         // On Linux: uuidgen

@@ -64,7 +64,7 @@ class OrderQueue
         $this->client->set($type . self::SIZE_OF_QUEUE . $this->key, $size);
     }
 
-    private function setCurrentSize($size) {
+    public function setCurrentSize($size) {
         $this->setSize(self::CURRENT_SIZE, $size);
     }
 
