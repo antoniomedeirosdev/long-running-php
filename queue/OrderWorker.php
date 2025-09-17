@@ -35,9 +35,9 @@ class OrderWorker
     public static function startInBackgrond($key) {
         $command = 'php ' . __DIR__ . '/background_script.php "' . $key . '" &';
         // To debug the background script, comment the next line...
-        //exec($command);
+        exec($command);
         // ... and uncomment the next line.
-        return;
+        //return;
     }
 
     private function updateOrder(Order $order)

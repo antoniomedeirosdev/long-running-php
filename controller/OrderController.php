@@ -84,8 +84,8 @@ class OrderController
         $queueKey = $_GET['queue'];
 
         // BEGIN Debugging the background script
-        $argv[1] = $queueKey;
-        include __DIR__ . '/../queue/background_script.php';
+        //$argv[1] = $queueKey;
+        //include __DIR__ . '/../queue/background_script.php';
         // END Debugging the background script
 
         $queue = new OrderQueue($queueKey);
