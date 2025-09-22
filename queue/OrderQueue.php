@@ -13,15 +13,27 @@ class OrderQueue
     private Client $client;
     private string $key;
 
-    public function __construct($key)
-    {
-        $this->key = $key;
-
+    public function __construct(
+        $key = null,
+        $arrOrder = []
+    ) {
         $this->client = new Client([
             'scheme' => 'tcp',
             'host' => self::REDIS_HOST,
             'port' => self::REDIS_PORT,
         ]);
+
+        if (empty($key)) {
+            $this->key = Order::uuidgen();
+            foreach ($arrOrder as $order) {
+                $this->enqueue($order);
+            }
+            $size = count($arrOrder);
+            $this->setInitialSize($size);
+            $this->setCurrentSize($size);
+        } else {
+            $this->key = $key;
+        }
     }
 
     public function dequeue(): ?Order
@@ -36,7 +48,7 @@ class OrderQueue
         return $order;
     }
 
-    public function enqueue(Order $order): void
+    private function enqueue(Order $order): void
     {
         $arrOrder = $order->toArray();
         $jsonOrder = json_encode($arrOrder);
@@ -49,6 +61,17 @@ class OrderQueue
 
     public function getInitialSize(): int {
         return $this->getSize(self::INITIAL_SIZE);
+    }
+
+    public function getKey(): string {
+        return $this->key;
+    }
+
+    public function getProgress(): int {
+        $initialSize = $this->getInitialSize();
+        $currentSize = $this->getCurrentSize();
+        $progress = ceil((($initialSize - $currentSize) / $initialSize) * 100);
+        return $progress;
     }
 
     private function getSize($type): int {
@@ -64,11 +87,11 @@ class OrderQueue
         $this->client->set($type . self::SIZE_OF_QUEUE . $this->key, $size);
     }
 
-    public function setCurrentSize($size) {
+    private function setCurrentSize($size) {
         $this->setSize(self::CURRENT_SIZE, $size);
     }
 
-    public function setInitialSize($size) {
+    private function setInitialSize($size) {
         $this->setSize(self::INITIAL_SIZE, $size);
     }
 }

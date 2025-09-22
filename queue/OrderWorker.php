@@ -35,10 +35,7 @@ class OrderWorker
     public static function startInBackgrond($key) {
         // https://stackoverflow.com/a/23572776/1657502
         $command = 'nohup nice php ' . __DIR__ . '/background_script.php "' . $key . '" > /dev/null 2>&1 & echo $!';
-        // To debug the background script, comment the next line...
         $pid = shell_exec($command);
-        // ... and uncomment the next line.
-        //return;
     }
 
     private function updateOrder(Order $order)

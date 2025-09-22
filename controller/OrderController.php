@@ -63,16 +63,16 @@ class OrderController
     {
         $arrId = $_POST['id'];
 
-        $queueKey = Order::uuidgen();
-        $queue = new OrderQueue($queueKey);
+        $arrOrder = [];
         foreach ($arrId as $id) {
             $order = new Order($id);
-            $queue->enqueue($order);
+            $arrOrder[] = $order;
         }
-        $size = count($arrId);
-        $queue->setInitialSize($size);
-        $queue->setCurrentSize($size);
 
+        $queue = new OrderQueue(null, $arrOrder);
+        $queueKey = $queue->getKey();
+
+        // To debug the background script, comment the next line
         OrderWorker::startInBackgrond($queueKey);
 
         header('Location: ' . self::APP_URL . '?action=show_progress&queue=' . $queueKey);
@@ -89,17 +89,14 @@ class OrderController
         // END Debugging the background script
 
         $queue = new OrderQueue($queueKey);
-        $initialSize = $queue->getInitialSize();
-        $currentSize = $queue->getCurrentSize();
+        $progress = $queue->getProgress();
 
         // BEGIN Testing the progress bar
+        // $currentSize = $queue->getCurrentSize();
         // if ($currentSize > 0) {
-        //     $currentSize = $currentSize - 1;
-        //     $queue->setCurrentSize($currentSize);
+        //     $queue->dequeue();
         // }
         // END Testing the progress bar
-
-        $progress = ceil((($initialSize - $currentSize) / $initialSize) * 100);
 
         include __DIR__ . '/../view/show_progress.php';
     }
