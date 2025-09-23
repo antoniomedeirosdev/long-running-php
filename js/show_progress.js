@@ -24,7 +24,7 @@ async function getProgress() {
 
     const data = await response.json();
 
-    setProgressBar(data.progress);
+    setProgressBar(data);
 
     if (!data.result) {
         getProgressInterval = setInterval(getProgress, 1000);
@@ -34,14 +34,14 @@ async function getProgress() {
     }
 }
 
-function setProgressBar(progress) {
+function setProgressBar(data) {
     const progressElement = document.getElementsByClassName('progress')[0];
-    progressElement.setAttribute('aria-valuenow', progress);
+    progressElement.setAttribute('aria-valuenow', data.progress);
 
     const progressBarElement = document.getElementsByClassName('progress-bar')[0];
-    progressBarElement.innerText = (progress + '%');
-    progressBarElement.style.width = (progress + '%');
-    if (progress == 100) {
+    progressBarElement.innerText = (data.progress + '%');
+    progressBarElement.style.width = (data.progress + '%');
+    if (data.result) {
         progressBarElement.classList.remove('progress-bar-striped', 'progress-bar-animated');
         progressBarElement.classList.add('text-bg-success');
     }

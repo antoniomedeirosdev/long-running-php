@@ -19,7 +19,7 @@ include __DIR__ . '/header.php';
     </tbody>
 </table>
 
-<div class="alert alert-success fade" role="alert">
+<div class="alert alert-success fade mt-5" role="alert">
     Finished processing orders! <a href="<?= self::APP_URL ?>">Return to the list of orders</a>.
 </div>
 
