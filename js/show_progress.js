@@ -22,13 +22,15 @@ async function getProgress() {
         console.log('Unexpected error!')
     }
 
-    const progress = await response.text();
-    setProgressBar(progress);
+    const data = await response.json();
 
-    if (progress < 100) {
+    setProgressBar(data.progress);
+
+    if (!data.result) {
         getProgressInterval = setInterval(getProgress, 1000);
     } else {
         showFinishedAlert();
+        showResult(data.result);
     }
 }
 
@@ -48,6 +50,18 @@ function setProgressBar(progress) {
 function showFinishedAlert() {
     const alertElement = document.getElementsByClassName('alert')[0];
     alertElement.classList.add('show');
+}
+
+function showResult(result) {
+    let html = '';
+    result.forEach(function (element, index, array) {
+        html += '<tr><td>' + element.id + '</td><td>' + element.status + '</td></tr>';
+    });
+    const tableBodyElement = document.getElementsByTagName('tbody')[0];
+    tableBodyElement.innerHTML = html;
+
+    const tableElement = document.getElementsByTagName('table')[0];
+    tableElement.classList.remove('d-none');
 }
 
 documentReady(function() {

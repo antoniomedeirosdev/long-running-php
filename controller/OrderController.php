@@ -47,7 +47,12 @@ class OrderController
         $queueKey = $_GET['queue'];
         $queue = new OrderQueue($queueKey);
         $progress = $queue->getProgress();
-        echo $progress;
+        $arrResponse = [ 'progress' => $progress ];
+        if ($queue->isFinished()) {
+            $arrResponse['result'] = $queue->getResult();
+        }
+        $jsonResponse = json_encode($arrResponse);
+        echo $jsonResponse;
     }
 
     public function listOrders()

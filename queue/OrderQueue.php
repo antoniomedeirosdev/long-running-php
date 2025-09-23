@@ -8,6 +8,7 @@ class OrderQueue
 
     private const CURRENT_SIZE = 'current-';
     private const INITIAL_SIZE = 'initial-';
+    private const RESULT_OF_QUEUE = 'result-of-queue-';
     private const SIZE_OF_QUEUE = 'size-of-queue-';
 
     private Client $client;
@@ -74,6 +75,17 @@ class OrderQueue
         return $progress;
     }
 
+    public function getResult() {
+        $jsonResult = $this->getResultJson();
+        $arrResult = json_decode($jsonResult, true);
+        return $arrResult;
+    }
+
+    private function getResultJson(): string|null {
+        $jsonResult = $this->client->get(self::RESULT_OF_QUEUE . $this->key);
+        return $jsonResult;
+    }
+
     private function getSize($type): int {
         $size = $this->client->get($type . self::SIZE_OF_QUEUE . $this->key);
         if (!empty($size)) {
@@ -81,6 +93,23 @@ class OrderQueue
         } else {
             return 0;
         }
+    }
+
+    public function isFinished() {
+        $jsonResult = $this->getResultJson();
+        return (!empty($jsonResult));
+    }
+
+    public function setResult($arrOrder) {
+        $arrResult = [];
+        foreach ($arrOrder as $order) {
+            $arrResult[] = [
+                'id' => $order->getId(),
+                'status' => $order->getStatusAsString()
+            ];
+        }
+        $jsonResult = json_encode($arrResult);
+        $this->client->set(self::RESULT_OF_QUEUE . $this->key, $jsonResult);
     }
 
     private function setSize($type, $size) {

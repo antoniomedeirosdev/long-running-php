@@ -8,6 +8,17 @@ include __DIR__ . '/header.php';
     <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%">0%</div>
 </div>
 
+<table class="table table-striped table-hover d-none">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
 <div class="alert alert-success fade" role="alert">
     Finished processing orders! <a href="<?= self::APP_URL ?>">Return to the list of orders</a>.
 </div>

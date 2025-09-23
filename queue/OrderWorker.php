@@ -14,18 +14,21 @@ class OrderWorker
 
     public function processOrders()
     {
+        $arrResult = [];
         $initialSize = $this->queue->getInitialSize();
         for ($currentOrder = 1; $currentOrder <= $initialSize; $currentOrder++) { 
             $order = $this->queue->dequeue();
             $this->remoteProcess($order);
             $this->updateOrder($order);
+            $arrResult[] = $order;
         }
+        $this->queue->setResult($arrResult);
     }
 
     private function remoteProcess(Order $order)
     {
         // Sleep some seconds (decided at random) to simulate talking to another system
-        $randomNumber = mt_rand(0, 2);
+        $randomNumber = mt_rand(2, 5);
         sleep($randomNumber);
 
         // Also define a random new status
