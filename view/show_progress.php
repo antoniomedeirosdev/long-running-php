@@ -4,24 +4,20 @@ include __DIR__ . '/header.php';
 
 <h1>Processing orders...</h1>
 
-<div class="progress my-5" role="progressbar" aria-label="Progress" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="height: 20px">
-    <div class="progress-bar <?= ($progress < 100 ? 'progress-bar-striped' : 'text-bg-success') ?>"
-        style="width: <?= $progress ?>%"><?= $progress ?>%</div>
+<div class="progress my-5" role="progressbar" aria-label="Progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="height: 20px">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%">0%</div>
 </div>
 
-<?php if ($progress < 100) { ?>
-    <script>
-        function autoRefresh() {
-            location.reload();
-        }
+<div class="alert alert-success fade" role="alert">
+    Finished processing orders! <a href="<?= self::APP_URL ?>">Return to the list of orders</a>.
+</div>
 
-        setInterval(autoRefresh, 1000);
-    </script>
-<?php } else { ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        Finished processing orders! <a href="<?= self::APP_URL ?>">Return to the list of orders</a>.
-    </div>
-<?php } ?>
+<script>
+    const APP_URL = '<?= self::APP_URL ?>';
+    const QUEUE_KEY = '<?= $queueKey ?>';
+</script>
+
+<script src="js/show_progress.js"></script>
 
 <?php
 include __DIR__ . '/footer.php';

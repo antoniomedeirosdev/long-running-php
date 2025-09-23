@@ -43,6 +43,13 @@ class OrderController
         exit();
     }
 
+    public function getProgress() {
+        $queueKey = $_GET['queue'];
+        $queue = new OrderQueue($queueKey);
+        $progress = $queue->getProgress();
+        echo $progress;
+    }
+
     public function listOrders()
     {
         $orders = json_decode(file_get_contents(self::JSON_SERVER_URL), true);
@@ -87,16 +94,6 @@ class OrderController
         //$argv[1] = $queueKey;
         //include __DIR__ . '/../queue/background_script.php';
         // END Debugging the background script
-
-        $queue = new OrderQueue($queueKey);
-        $progress = $queue->getProgress();
-
-        // BEGIN Testing the progress bar
-        // $currentSize = $queue->getCurrentSize();
-        // if ($currentSize > 0) {
-        //     $queue->dequeue();
-        // }
-        // END Testing the progress bar
 
         include __DIR__ . '/../view/show_progress.php';
     }

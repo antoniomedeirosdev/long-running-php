@@ -28,6 +28,10 @@ switch ($_GET['action']) {
         OrderController::getInstance()->showProgress();
         break;
 
+    case 'get_progress':
+        OrderController::getInstance()->getProgress();
+        break;
+
     default:
         # code...
         break;
